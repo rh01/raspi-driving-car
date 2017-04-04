@@ -6,9 +6,9 @@ print 'Loading training data...'
 e0 = cv2.getTickCount()
 
 # load training data
-image_array = np.zeros((1, 38400))
+image_array = np.zeros((1, 38400), 'float')
 label_array = np.zeros((1, 4), 'float')
-training_data = glob.glob('training_data/*.npz')
+training_data = glob.glob('training_data_temp/*.npz')
 
 for single_npz in training_data:
     with np.load(single_npz) as data:
@@ -22,6 +22,10 @@ for single_npz in training_data:
 
 train = image_array[1:, :]
 train_labels = label_array[1:, :]
+print train
+print type(train)
+print train_labels
+
 print train.shape
 print train_labels.shape
 
@@ -33,19 +37,28 @@ print 'Loading image duration:', time0
 e1 = cv2.getTickCount()
 
 # create MLP
-layer_sizes = np.int32([38400, 32, 4])
-model = cv2.ml.ANN_MLP()
-model.create(layer_sizes)
+layer_sizes = np.array([38400, 32, 4], dtype=np.float32)
+# model = cv2.ml.ANN_MLP()
+model = cv2.ml.ANN_MLP_create()
+model.setLayerSizes(layer_sizes)
+# model.create(layer_sizes)
 criteria = (cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS, 500, 0.0001)
 criteria2 = (cv2.TERM_CRITERIA_COUNT, 100, 0.001)
+
+
+model.setTrainMethod(cv2.ml.ANN_MLP_BACKPROP | cv2.ml.ANN_MLP_UPDATE_WEIGHTS)
+model.setActivationFunction(cv2.ml.ANN_MLP_SIGMOID_SYM)
+model.setTermCriteria(criteria)
+
+
+
 params = dict(term_crit = criteria,
-               train_method = cv2.ANN_MLP_TRAIN_PARAMS_BACKPROP,
+               train_method = cv2.ml.ANN_MLP_BACKPROP,
                bp_dw_scale = 0.001,
                bp_moment_scale = 0.0 )
 
 print 'Training MLP ...'
-num_iter = model.train(train, train_labels, None, params = params)
-
+num_iter = model.train(np.array(train, dtype=np.float32), cv2.ml.ROW_SAMPLE,np.array(train_labels, dtype=np.float32))
 # set end time
 e2 = cv2.getTickCount()
 time = (e2 - e1)/cv2.getTickFrequency()
