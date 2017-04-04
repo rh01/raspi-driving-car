@@ -1,0 +1,1 @@
+raspistill -t 10 -o image.jpg
