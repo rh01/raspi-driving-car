@@ -14,21 +14,21 @@ class rpiGPIOHelper(object):
         GPIO.output(15,0)
         time.sleep(0.25)
         GPIO.output(15,1)
-        print "turn right."
+        print "pi car right."
 
     def left(self):
         GPIO.setup(13, GPIO.OUT)
         GPIO.output(13,0)
         time.sleep(0.25)
         GPIO.output(13,1)
-        print "turn left."
+        print "pi car left."
         
     def up(self):
         GPIO.setup(11, GPIO.OUT)
         GPIO.output(11,0)
-        time.sleep(0.25)
+        time.sleep(0.15)
         GPIO.output(11,1)
-        print "forwarding."
+        print "pi car forwarding."
 
 
     def down(self):
@@ -36,9 +36,33 @@ class rpiGPIOHelper(object):
         GPIO.output(7,0)
         time.sleep(0.25)
         GPIO.output(7,1)
-        print "backward"
+        print "pi car backward"
+    
+    def turnright(self):
+        GPIO.setup(15, GPIO.OUT) # left
+        GPIO.setup(11, GPIO.OUT) # forword
 
-    def cleanall(self):
+        GPIO.output(15,0)
+        GPIO.output(11,0)
+        time.sleep(0.20)
+
+        GPIO.output(15,1)
+        GPIO.output(11,1)
+        print "pi car turnright"
+
+    def turnleft(self):
+        GPIO.setup(13, GPIO.OUT) # left
+        GPIO.setup(11, GPIO.OUT) # forword
+
+        GPIO.output(13,0)
+        GPIO.output(11,0)
+        time.sleep(0.20)
+
+        GPIO.output(13,1)
+        GPIO.output(11,1)
+        print "pi car turnleft"
+
+    def clean(self):
         global recv_turn
         GPIO.cleanup()
         recv_turn = False
