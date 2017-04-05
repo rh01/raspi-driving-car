@@ -77,7 +77,7 @@ recv_turn = True
 
 # ============socket================ #
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('172.24.1.126',8002))
+s.connect(('172.24.1.126',8004))
 # ============socket================ #
 
 

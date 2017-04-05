@@ -15,8 +15,8 @@ class NeuralNetwork(object):
 
     def create(self):
         layer_size = np.array([38400, 32, 4], dtype=np.float32)
-        self.model.load('mlp_xml/mlp.xml')
         self.model.setLayerSizes(layer_sizes)
+        self.model.load('mlp_xml/mlp.xml')
 
 
     def predict(self, samples):
@@ -27,20 +27,28 @@ class NeuralNetwork(object):
 class RCControl(object):
 
     def __init__(self):
-        self.serial_port = serial.Serial('/dev/tty.usbmodem1421', 115200, timeout=1)
+        self.__data = 'I am pi'
+        print 'start moving...'
+        # self.serial_port = serial.Serial('/dev/tty.usbmodem1421', 115200, timeout=1)
+        self.gpio_socket.bind(('172.24.1.126', 8004))
+        self.gpio_socket.listen(0)
+        self.conn2, self.addr = self.gpio_socket.accept()
+        
+
+        # self.send_inst = True
 
     def steer(self, prediction):
         if prediction == 2:
-            self.serial_port.write(chr(1))
+            self.conn2.sendall('up')
             print("Forward")
         elif prediction == 0:
-            self.serial_port.write(chr(7))
+            self.conn2.sendall('turnleft')
             print("Left")
         elif prediction == 1:
-            self.serial_port.write(chr(6))
+            self.conn2.sendall('turnright')
             print("Right")
         else:
-            self.stop()
+            self.conn2.sendall('clean')
 
     def stop(self):
         self.serial_port.write(chr(0))

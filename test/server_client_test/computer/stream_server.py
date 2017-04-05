@@ -27,7 +27,7 @@ class VideoStreamHandler(SocketServer.StreamRequestHandler):
                     half_gray = gray[120:240, :]
 
                     cv2.imshow('image', image)
-                    #cv2.imshow('mlp_image', half_gray)
+                    # cv2.imshow('mlp_image', half_gray)
 
                     if cv2.waitKey(1) & 0xFF == ord('q'):
                         break

@@ -14,7 +14,7 @@ class CollectTrainingData(object):
 
         # stream transfer as server
         self.server_socket.bind(('172.24.1.126', 8000))
-        self.gpio_socket.bind(('172.24.1.126', 8002))
+        self.gpio_socket.bind(('172.24.1.126', 8004))
 
         self.server_socket.listen(0)
         self.gpio_socket.listen(0)
