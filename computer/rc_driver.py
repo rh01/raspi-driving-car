@@ -3,7 +3,8 @@ import SocketServer
 import cv2
 import numpy as np
 import math
-
+import socket
+import time
 # distance data measured by ultrasonic sensor
 sensor_data = " "
 
@@ -11,13 +12,12 @@ sensor_data = " "
 class NeuralNetwork(object):
 
     def __init__(self):
-        self.model = cv2.ml.ANN_MLP_create()
+        self.model = cv2.ANN_MLP()
 
     def create(self):
-        layer_size = np.array([38400, 32, 4], dtype=np.float32)
-        self.model.setLayerSizes(layer_sizes)
-        self.model.load('mlp_xml/mlp.xml')
-
+        layer_size = np.int32([38400, 32, 4])
+        self.model.create(layer_size)
+        self.model.load('mlp_xml/mlp2.xml')
 
     def predict(self, samples):
         ret, resp = self.model.predict(samples)
@@ -30,6 +30,8 @@ class RCControl(object):
         self.__data = 'I am pi'
         print 'start moving...'
         # self.serial_port = serial.Serial('/dev/tty.usbmodem1421', 115200, timeout=1)
+        self.gpio_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
         self.gpio_socket.bind(('172.24.1.126', 8004))
         self.gpio_socket.listen(0)
         self.conn2, self.addr = self.gpio_socket.accept()
@@ -40,18 +42,26 @@ class RCControl(object):
     def steer(self, prediction):
         if prediction == 2:
             self.conn2.sendall('up')
+            time.sleep(0.5)
             print("Forward")
         elif prediction == 0:
             self.conn2.sendall('turnleft')
+            time.sleep(0.5)
+
             print("Left")
         elif prediction == 1:
             self.conn2.sendall('turnright')
+            time.sleep(0.5)
+
             print("Right")
         else:
-            self.conn2.sendall('clean')
+            self.stop()
+            time.sleep(0.5)
+
+            print 'stop'
 
     def stop(self):
-        self.serial_port.write(chr(0))
+        self.conn2.sendall('clean')
 
 
 class DistanceToCamera(object):
@@ -288,8 +298,8 @@ class ThreadServer(object):
         server = SocketServer.TCPServer((host, port), SensorDataHandler)
         server.serve_forever()
 
-    distance_thread = threading.Thread(target=server_thread2, args=('192.168.1.126', 8002))
-    distance_thread.start()
+    # distance_thread = threading.Thread(target=server_thread2, args=('192.168.1.126', 8002))
+    # distance_thread.start()
     video_thread = threading.Thread(target=server_thread('172.24.1.126', 8000))
     video_thread.start()
 

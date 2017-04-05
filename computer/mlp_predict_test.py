@@ -4,7 +4,7 @@ import glob
 
 
 # load training data
-image_array = np.zeros((1, 38400), 'float')
+image_array = np.zeros((1, 38400))
 label_array = np.zeros((1, 4), 'float')
 training_data = glob.glob('testing_data/*.npz')
 
@@ -24,11 +24,10 @@ print test.shape
 print test_labels.shape
 
 # create MLP
-layer_sizes = np.int32([38400, 32, 4])
-model = cv2.ml.ANN_MLP_create()
-# model.create(layer_sizes)
-model.setLayerSizes(layer_sizes)
-model.load('mlp_xml/mlp.xml')
+layer_sizes = np.array([38400, 32, 4], dtype=np.int32)
+model = cv2.ANN_MLP()
+model.create(layer_sizes)
+model.load('mlp_xml/mlp2.xml')
 
 # generate predictions
 e0 = cv2.getTickCount()

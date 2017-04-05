@@ -12,14 +12,14 @@ class rpiGPIOHelper(object):
     def right(self):
         GPIO.setup(15, GPIO.OUT)
         GPIO.output(15,0)
-        time.sleep(0.25)
+        time.sleep(0.15)
         GPIO.output(15,1)
         print "pi car right."
 
     def left(self):
         GPIO.setup(13, GPIO.OUT)
         GPIO.output(13,0)
-        time.sleep(0.25)
+        time.sleep(0.15)
         GPIO.output(13,1)
         print "pi car left."
         
@@ -34,7 +34,7 @@ class rpiGPIOHelper(object):
     def down(self):
         GPIO.setup(7, GPIO.OUT)
         GPIO.output(7,0)
-        time.sleep(0.25)
+        time.sleep(0.15)
         GPIO.output(7,1)
         print "pi car backward"
     
@@ -44,7 +44,7 @@ class rpiGPIOHelper(object):
 
         GPIO.output(15,0)
         GPIO.output(11,0)
-        time.sleep(0.20)
+        time.sleep(0.10)
 
         GPIO.output(15,1)
         GPIO.output(11,1)
@@ -56,7 +56,7 @@ class rpiGPIOHelper(object):
 
         GPIO.output(13,0)
         GPIO.output(11,0)
-        time.sleep(0.20)
+        time.sleep(0.10)
 
         GPIO.output(13,1)
         GPIO.output(11,1)
