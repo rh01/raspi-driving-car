@@ -8,7 +8,7 @@ e0 = cv2.getTickCount()
 # load training data
 image_array = np.zeros((1, 38400), 'float')
 label_array = np.zeros((1, 4), 'float')
-training_data = glob.glob('training_data_temp/*.npz')
+training_data = glob.glob('training_data/*.npz')
 
 for single_npz in training_data:
     with np.load(single_npz) as data:
@@ -52,10 +52,10 @@ model.setTermCriteria(criteria)
 
 
 
-params = dict(term_crit = criteria,
-               train_method = cv2.ml.ANN_MLP_BACKPROP,
-               bp_dw_scale = 0.001,
-               bp_moment_scale = 0.0 )
+# params = dict(term_crit = criteria,
+#                train_method = cv2.ml.ANN_MLP_BACKPROP,
+#                bp_dw_scale = 0.001,
+#                bp_moment_scale = 0.0 )
 
 print 'Training MLP ...'
 num_iter = model.train(np.array(train, dtype=np.float32), cv2.ml.ROW_SAMPLE,np.array(train_labels, dtype=np.float32))
