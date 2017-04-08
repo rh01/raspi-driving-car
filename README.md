@@ -14,3 +14,9 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 ## System Structure Diagram
 ![](http://olrs8j04a.bkt.clouddn.com/17-4-5/93536256-file_1491402794925_1922.png "structure")
 
+## Auto RC Model
+
+![](http://olrs8j04a.bkt.clouddn.com/17-4-3/61400002-file_1491224765140_11921.jpg "forward")
+
+![](http://olrs8j04a.bkt.clouddn.com/17-4-3/85120163-file_1491225292835_80c7.jpg "侧面")
+
