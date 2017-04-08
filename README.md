@@ -26,7 +26,7 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 
 ## Training Step
 
-![](http://olrs8j04a.bkt.clouddn.com/17-4-8/76871778-file_1491627736215_113d.png)
+![](http://olrs8j04a.bkt.clouddn.com/17-4-8/32552402-file_1491640966250_141a0.png)
 
 ## *To-DO*
 
