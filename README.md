@@ -18,7 +18,7 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 
 ![](http://olrs8j04a.bkt.clouddn.com/17-4-3/61400002-file_1491224765140_11921.jpg "forward")
 
-![](http://olrs8j04a.bkt.clouddn.com/17-4-3/85120163-file_1491225292835_80c7.jpg "侧面")
+![](http://olrs8j04a.bkt.clouddn.com/17-4-3/20135471-file_1491224765877_d3c8.jpg)
 
 ## College Data Process
 
