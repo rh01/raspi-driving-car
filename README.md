@@ -20,6 +20,17 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 
 ![](http://olrs8j04a.bkt.clouddn.com/17-4-3/85120163-file_1491225292835_80c7.jpg "侧面")
 
-# College Data Process
+## College Data Process
 
 ![](http://olrs8j04a.bkt.clouddn.com/17-4-8/19423442-file_1491627496361_813f.gif)
+
+## Training Step
+
+![](http://olrs8j04a.bkt.clouddn.com/17-4-8/76871778-file_1491627736215_113d.png)
+
+## *To-DO*
+
+* RC Drive
+* Optimaization
+* change model
+* etc...
