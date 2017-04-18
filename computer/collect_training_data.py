@@ -28,6 +28,11 @@ class CollectTrainingData(object):
         self.send_inst = True
 
         # create labels
+        # self.k = np.zeros((3, 3), 'float')
+        # for i in range(3):
+        #     self.k[i, i] = 1
+        # self.temp_label = np.zeros((1, 3), 'float')
+
         self.k = np.zeros((4, 4), 'float')
         for i in range(4):
             self.k[i, i] = 1
@@ -52,6 +57,8 @@ class CollectTrainingData(object):
         e1 = cv2.getTickCount()
         image_array = np.zeros((1, 38400))
         label_array = np.zeros((1, 4), 'float')
+        # label_array = np.zeros((1, 3), 'float')
+
 
         # stream video frames one by one
         try:
@@ -132,13 +139,13 @@ class CollectTrainingData(object):
                                 label_array = np.vstack((label_array, self.k[2]))
                                 # self.forward()
 
-                            elif key_input[pygame.K_DOWN]:
-                                print("Reverse")
-                                self.conn2.sendall('down')
+                            # elif key_input[pygame.K_DOWN]:
+                            #     print("Reverse")
+                            #     self.conn2.sendall('down')
 
-                                saved_frame += 1
-                                image_array = np.vstack((image_array, temp_array))
-                                label_array = np.vstack((label_array, self.k[3]))
+                            #     saved_frame += 1
+                            #     image_array = np.vstack((image_array, temp_array))
+                            #     label_array = np.vstack((label_array, self.k[3]))
 
 
                             
