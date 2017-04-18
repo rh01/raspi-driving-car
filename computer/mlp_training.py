@@ -134,7 +134,7 @@ time = (e2 - e1)/cv2.getTickFrequency()
 print 'Training duration:', time
 
 # save param
-model.save('mlp_xml/mlp2.xml')
+model.save('mlp_xml/mlp_final.xml')
 
 print 'Ran for %d iterations' % num_iter
 

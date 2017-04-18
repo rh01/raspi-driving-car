@@ -13,8 +13,8 @@ class CollectTrainingData(object):
         self.gpio_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # stream transfer as server
-        self.server_socket.bind(('172.24.1.126', 8000))
-        self.gpio_socket.bind(('172.24.1.126', 8004))
+        self.server_socket.bind(('172.14.1.126', 8000))
+        self.gpio_socket.bind(('172.14.1.126', 8004))
 
         self.server_socket.listen(0)
         self.gpio_socket.listen(0)
@@ -79,7 +79,7 @@ class CollectTrainingData(object):
                     cv2.imwrite('training_images/frame{:>05}.jpg'.format(frame), image)
                     
                     cv2.imshow('roi_image', roi)
-                    # cv2.imshow('image', image)
+                    cv2.imshow('image', image)
 
                     # print 1
                     # reshape the roi image into one row array
@@ -179,7 +179,7 @@ class CollectTrainingData(object):
             train_labels = label_array[1:, :]
 
             # save training data as a numpy file
-            np.savez('testing_data/test04.npz', train=train, train_labels=train_labels)
+            np.savez('training_data/test009.npz', train=train, train_labels=train_labels)
 
             e2 = cv2.getTickCount()
             # calculate streaming duration

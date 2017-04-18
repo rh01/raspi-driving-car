@@ -3,51 +3,78 @@ import socket
 import RPi.GPIO as GPIO
 import time
 
+left = 13
+right = 15
+forward = 11
+reverse = 15
+
+GPIO.setmode(GPIO.BOARD)    # Numbers pins by physical location
+
+
+GPIO.setup(left, GPIO.OUT)
+GPIO.output(left, GPIO.HIGH)
+
+GPIO.setup(right, GPIO.OUT)
+GPIO.output(right, GPIO.HIGH)
+
+GPIO.setup(forward, GPIO.OUT)
+GPIO.output(forward, GPIO.HIGH)
+
+GPIO.setup(reverse, GPIO.OUT)
+GPIO.output(reverse, GPIO.HIGH)
+
+
 class rpiGPIOHelper(object):
     def __init__(self):
         print "start recving command data......"
         self.__data = "pi"
-        GPIO.setmode(GPIO.BOARD)
+        # GPIO.setmode(GPIO.BOARD)
 
     def right(self):
-        GPIO.setup(15, GPIO.OUT)
+        # GPIO.setup(15, GPIO.OUT)
         GPIO.output(15,0)
-        time.sleep(0.15)
+        # time.sleep(0.10)
         GPIO.output(15,1)
+        # time.sleep(0.05)
         print "pi car right."
 
     def left(self):
-        GPIO.setup(13, GPIO.OUT)
+        # GPIO.setup(13, GPIO.OUT)
         GPIO.output(13,0)
-        time.sleep(0.15)
+        # time.sleep(0.10)
         GPIO.output(13,1)
+        # time.sleep(0.05)
         print "pi car left."
         
     def up(self):
-        GPIO.setup(11, GPIO.OUT)
+        # GPIO.setup(11, GPIO.OUT)
         GPIO.output(11,0)
-        time.sleep(0.15)
+        # time.sleep(0.05)
         GPIO.output(11,1)
+        # time.sleep(0.05)
         print "pi car forwarding."
 
 
     def down(self):
-        GPIO.setup(7, GPIO.OUT)
+        # GPIO.setup(7, GPIO.OUT)
         GPIO.output(7,0)
-        time.sleep(0.15)
+        # time.sleep(0.05)
         GPIO.output(7,1)
+        # time.sleep(0.05)
         print "pi car backward"
     
     def turnright(self):
-        GPIO.setup(15, GPIO.OUT) # left
-        GPIO.setup(11, GPIO.OUT) # forword
+        # GPIO.setup(15, GPIO.OUT) # left
+        # GPIO.setup(11, GPIO.OUT) # forword
 
         GPIO.output(15,0)
         GPIO.output(11,0)
-        time.sleep(0.10)
+        # time.sleep(0.05)
 
         GPIO.output(15,1)
         GPIO.output(11,1)
+        # time.sleep(0.05)
+        # time.sleep(0.05)
         print "pi car turnright"
 
     def turnleft(self):
@@ -56,10 +83,13 @@ class rpiGPIOHelper(object):
 
         GPIO.output(13,0)
         GPIO.output(11,0)
-        time.sleep(0.10)
+        # time.sleep(0.050)
+        # time.sleep(0.10)
 
         GPIO.output(13,1)
         GPIO.output(11,1)
+        # time.sleep(0.05)
+        # time.sleep(0.05)
         print "pi car turnleft"
 
     def clean(self):
@@ -77,7 +107,7 @@ recv_turn = True
 
 # ============socket================ #
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('172.24.1.126',8004))
+s.connect(('172.14.1.126',8004))
 # ============socket================ #
 
 

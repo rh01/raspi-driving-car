@@ -17,7 +17,7 @@ class NeuralNetwork(object):
     def create(self):
         layer_size = np.int32([38400, 32, 4])
         self.model.create(layer_size)
-        self.model.load('mlp_xml/mlp2.xml')
+        self.model.load('mlp_xml/mlp_final.xml')
 
     def predict(self, samples):
         ret, resp = self.model.predict(samples)
@@ -32,36 +32,41 @@ class RCControl(object):
         # self.serial_port = serial.Serial('/dev/tty.usbmodem1421', 115200, timeout=1)
         self.gpio_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        self.gpio_socket.bind(('172.24.1.126', 8004))
+        self.gpio_socket.bind(('172.14.1.126', 8004))
         self.gpio_socket.listen(0)
         self.conn2, self.addr = self.gpio_socket.accept()
+        self.pre_cmd = ''
         
 
         # self.send_inst = True
 
     def steer(self, prediction):
         if prediction == 2:
-            self.conn2.sendall('up')
-            time.sleep(0.5)
+            self.conn2.send('upO')
+            # time.sleep(1)
+            self.pre_cmd = 'upO'
             print("Forward")
         elif prediction == 0:
-            self.conn2.sendall('turnleft')
-            time.sleep(0.5)
+            self.conn2.send('turnleftO')
+            # time.sleep(1)
+            self.pre_cmd = 'turnleftO'
 
             print("Left")
         elif prediction == 1:
-            self.conn2.sendall('turnright')
-            time.sleep(0.5)
+            self.conn2.send('turnrightO')
+            # time.sleep(1)
+            self.pre_cmd = 'turnrightO'
 
             print("Right")
         else:
-            self.stop()
-            time.sleep(0.5)
-
+            # self.stop()
+            # time.sleep(1.5)
+            self.conn2.send(self.pre_cmd)
             print 'stop'
 
     def stop(self):
-        self.conn2.sendall('clean')
+        # self.conn2.sendall('clean')
+        time.sleep(1)
 
 
 class DistanceToCamera(object):
@@ -218,8 +223,8 @@ class VideoStreamHandler(SocketServer.StreamRequestHandler):
                         self.d_stop_sign = d1
                         self.d_light = d2
 
-                    cv2.imshow('image', image)
-                    #cv2.imshow('mlp_image', half_gray)
+                    # cv2.imshow('image', image)
+                    cv2.imshow('mlp_image', half_gray)
 
                     # reshape image
                     image_array = half_gray.reshape(1, 38400).astype(np.float32)
@@ -269,7 +274,9 @@ class VideoStreamHandler(SocketServer.StreamRequestHandler):
                         self.obj_detection.yellow_light = False
 
                     else:
+                        time.sleep(0.05)
                         self.rc_car.steer(prediction)
+
                         self.stop_start = cv2.getTickCount()
                         self.d_stop_sign = 25
 
@@ -300,7 +307,7 @@ class ThreadServer(object):
 
     # distance_thread = threading.Thread(target=server_thread2, args=('192.168.1.126', 8002))
     # distance_thread.start()
-    video_thread = threading.Thread(target=server_thread('172.24.1.126', 8000))
+    video_thread = threading.Thread(target=server_thread('172.14.1.126', 8000))
     video_thread.start()
 
 if __name__ == '__main__':

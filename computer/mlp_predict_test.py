@@ -27,8 +27,8 @@ print test_labels.shape
 layer_sizes = np.array([38400, 32, 4], dtype=np.int32)
 model = cv2.ANN_MLP()
 model.create(layer_sizes)
-model.load('mlp_xml/mlp2.xml')
-
+model.load('mlp_xml/mlp_final.xml')
+# model = cv2.ml.
 # generate predictions
 e0 = cv2.getTickCount()
 ret, resp = model.predict(test)

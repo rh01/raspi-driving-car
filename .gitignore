@@ -1,6 +1,6 @@
 *.jpg
 *.spec
-
+*.npz
 
 # Installer logs
 pip-log.txt

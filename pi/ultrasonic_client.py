@@ -7,7 +7,7 @@ GPIO.setwarnings(False)
 
 # create a socket and bind socket to the host
 client_socket = socket(AF_INET, SOCK_STREAM)
-client_socket.connect(('172.24.1.126', 8002))
+client_socket.connect(('172.14.1.126', 8002))
 
 def measure():
     
@@ -28,11 +28,11 @@ def measure():
   return distance
 
 # referring to the pins by GPIO numbers
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 
 # define pi GPIO
-GPIO_TRIGGER = 23
-GPIO_ECHO    = 24
+GPIO_TRIGGER = 16
+GPIO_ECHO    = 18
 
 # output pin: Trigger
 GPIO.setup(GPIO_TRIGGER,GPIO.OUT)
