@@ -18,9 +18,13 @@ from tqdm import tqdm
 print 'Loading training data...'
 time_load_start = time.time()         # Returns the number of ticks after a certain event.
 
+
+
+
 # Load jpg images to get image_array.
-training_images = glob.glob('./training_data/*_cnn/*.jpg')
-image_array = np.array([cv2.imread(name, cv2.IMREAD_GRAYSCALE) for name in tqdm(training_images)], dtype=np.float64)
+# training_images = glob.glob('./training_data/*_cnn/*.jpg')
+# image_array = np.array([cv2.imread(name, cv2.IMREAD_GRAYSCALE) for name in tqdm(training_images)], dtype=np.float64)
+
 
 # Load training data .npz to get label_array, unpacking what's in the saved .npz files.
 # label_array = np.zeros((1, 3), 'float')
