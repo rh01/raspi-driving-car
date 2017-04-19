@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+
+{% block navbarl %}
+<li class="active"><a href="{{ url_for('index') }}"><span class="glyphicon glyphicon-home"
+                     aria-hidden="true"></span> 首页</a></li>
+                <li><a href="{{ url_for('aboutass') }}"><span class="glyphicon glyphicon-info-sign"
+                     aria-hidden="true"></span> 关于该课程设计</a></li>
+                <li class="dropdown">
+                    <a href="contactus.html" class="dropdown-toggle" data-toggle="dropdown"
+                     role="button" aria-haspopup="true" aria-expanded="false">
+                     <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                     作业 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/crypt/classic">仿射密码</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">对称加密</li>
+                        <li><a href="/crypt/des">DES加密</a></li>
+                        <li class="dropdown-header">非对称加密</li>
+                        <li><a href="/crypt/rsa">RSA加密</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">额外的项目</li>
+                        <li><a href="/crypt/lfsr">序列密码</a></li>
+                        <li><a href="/crypt/dsa">DSA数字签名</a></li>
+                        <li><a href="#">AES加密</a></li>
+
+
+
+                    </ul>
+                 </li>
+                <li><a href="{{ url_for('contact')}}">
+        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+        联系我
+    </a></li>
+
+
+
+
+    
+{% endblock %}
+
+{% block header %}
+<header class="jumbotron" style="margin: 0px auto; padding: 70px 30px;background: #7986CB;color: floralwhite;">
+
+    <!-- Main component for a primary marketing message or call to action -->
+
+    <div class="container">
+        <div class="row row-header">
+            <div class="col-xs-12 col-sm-8">
+                <h1>密码学课程设计</h1>
+                <p style="padding:40px;"></p>
+                <p>申恒恒 网络工程 13-1</p>
+            </div>
+            <div class="col-xs-12 col-sm-2">
+                    <p style="padding:0px;"></p>
+                    <img src="static/ayit.png" class="img-responsive">
+                </div>
+            
+        </div>
+    </div>
+</header>  
+{% endblock %}
+
+
+
+{% block page_content %}
+
+  
+<!-- <h1>密码学课程作业</h1>
+<hr />
+<ul class="homeworks">
+    <li><a href="crypt/classic">仿射密码</a></li>
+    <li><a href="crypt/des">DES加密</a></li>
+    <li><a href="#">AES加密</a></li>
+    <li><a href="crypt/rsa">RSA加密</a></li>
+    <li><a href="crypt/lfsr">序列密码</a></li>
+    <li><a href="crypt/dsa">DSA数字签名</a></li>
+
+
+</ol> -->
+<div class="container">
+    
+    
+    <div class="row row-content">
+        <div class="col-xs-12 col-sm-3 col-sm-push-9">
+            <p style="padding:20px;"></p>
+            <h3 align=center>Our Lipsmacking Culinary Creations</h3>
+        </div>
+        <div class="col-xs-12 col-sm-9 col-sm-pull-3">
+            <div class="media">
+                <div class="media-left media-middle">
+                    
+                    <img class="media-object img-thumbnail"
+                     src="static/aes.png" alt="Uthappizza">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h2 class="media-heading">仿射密码 </h2>
+                    <p>A unique combination of Indian Uthappam (pancake) and
+                      Italian pizza, topped with Cerignola olives, ripe vine
+                      cherry tomatoes, Vidalia onion, Guntur chillies and
+                      Buffalo Paneer.</p>
+                    <p><a class="btn btn-primary btn-xs" href="#">详情 &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-content">
+        <div class="col-xs-12 col-sm-3">
+            <p style="padding:20px;"></p>
+            <h3 align=center>This Month's Promotions</h3>
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            <div class="media">
+                <div class="media-body">
+                    <h2 class="media-heading">DES加密</h2>
+                    <p>Featuring mouthwatering combinations with a choice of five different salads, six enticing appetizers, six main entrees and five choicest desserts. Free flowing bubbly and soft drinks. All for just $19.99 per person </p>
+                    <p><a class="btn btn-primary btn-xs" href="#">详情 &raquo;</a></p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-content">
+        <div class="col-xs-12 col-sm-3 col-sm-push-9">
+            <p style="padding:20px;"></p>
+            <h3 align=center>Meet our Culinary Specialists</h3>
+        </div>
+        <div class="col-xs-12 col-sm-9 col-sm-pull-3">
+            <div class="media">
+                <div class="media-left media-middle">
+               
+                    <img class="media-object img-thumbnail"
+                     src="static/aes.png" alt="Alberto Somayya">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h2 class="media-heading">AES加密</h2>
+                    <h4>Executive Chef</h4>
+                    <p>Award winning three-star Michelin chef with wide
+                     International experience having worked closely with
+                     whos-who in the culinary world, he specializes in
+                      creating mouthwatering Indo-Italian fusion experiences.
+                     </p>
+                    <p><a class="btn btn-primary btn-xs" href="#">详情 &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-content">
+        
+        <div class="col-xs-12 col-sm-12 ">
+            <div class="media">
+                
+                <div class="media-body">
+                    <h2 class="media-heading">RSA加密</h2>
+                    <h4>Executive Chef</h4>
+                    <p>Award winning three-star Michelin chef with wide
+                     International experience having worked closely with
+                     whos-who in the culinary world, he specializes in
+                      creating mouthwatering Indo-Italian fusion experiences.
+                     </p>
+                    <p><a class="btn btn-primary btn-xs" href="#">详情 &raquo;</a></p>
+                </div>
+                <div class="media-right media-middle">
+               
+                    <img class="media-object img-thumbnail"
+                     src="static/rsa.png" alt="Alberto Somayya">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-content">
+        <div class="col-xs-12 col-sm-3 col-sm-push-9">
+            <p style="padding:20px;"></p>
+            <h3 align=center>Meet our Culinary Specialists</h3>
+        </div>
+        <div class="col-xs-12 col-sm-9 col-sm-pull-3">
+            <div class="media">
+                <div class="media-left media-middle">
+         
+                    <img class="media-object img-thumbnail"
+                     src="static/aes.png" alt="Alberto Somayya">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h2 class="media-heading">AES加密</h2>
+                    <h4>Executive Chef</h4>
+                    <p>Award winning three-star Michelin chef with wide
+                     International experience having worked closely with
+                     whos-who in the culinary world, he specializes in
+                      creating mouthwatering Indo-Italian fusion experiences.
+                     </p>
+                    <p><a class="btn btn-primary btn-xs" href="#">详情 &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-content">
+        <div class="col-xs-12 col-sm-3 col-sm-push-9">
+            <p style="padding:20px;"></p>
+            <h3 align=center>Meet our Culinary Specialists</h3>
+        </div>
+        <div class="col-xs-12 col-sm-9 col-sm-pull-3">
+            <div class="media">
+                <div class="media-left media-middle">
+                    <img class="media-object img-thumbnail"
+                     src="static/aes.png" alt="Alberto Somayya">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h2 class="media-heading">AES加密</h2>
+                    <h4>Executive Chef</h4>
+                    <p>Award winning three-star Michelin chef with wide
+                     International experience having worked closely with
+                     whos-who in the culinary world, he specializes in
+                      creating mouthwatering Indo-Italian fusion experiences.
+                     </p>
+                    <p><a class="btn btn-primary btn-xs" href="#">详情 &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

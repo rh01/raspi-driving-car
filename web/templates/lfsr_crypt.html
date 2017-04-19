@@ -1,0 +1,38 @@
+{% extends "crypt.html" %}
+
+{% block crypt_content %}
+	<div class="row">
+		<div class="col-md-7">{{ super() }}</div>
+		<div class="col-md-5">
+			<button class="btn btn-default" type="submit" id="mod_list">显示序列列表</button>
+			<table class="table table-bordered" id="seq_table" style="display:none;">
+				<thead>
+					<td>初始状态</td>
+					<td>序列长度</td>
+					<td>序列</td>
+				</thead>
+				<tbody>
+					{% for item in seq_list %}
+					<tr>
+						<td>{{ item[0] }}</td>
+						<td>{{ item[1] }}</td>
+						<td>{{ item[2] }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+
+{% block post_script %}
+<script>
+	$("#mod_list").click(function() {
+		$("#seq_table").fadeToggle();
+		if($("#mod_list").html() == "显示序列列表")
+			$("#mod_list").html("隐藏序列列表");
+		else
+			$("#mod_list").html("显示序列列表");
+	})
+</script>
+{% endblock %}

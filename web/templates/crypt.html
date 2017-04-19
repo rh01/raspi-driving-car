@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block navbarl %}
+	<li><a href="{{ url_for('index') }}"><span class="glyphicon glyphicon-home"
+	     aria-hidden="true"></span> 首页</a></li>
+	<li><a href="{{ url_for('aboutass') }}"><span class="glyphicon glyphicon-info-sign"
+	     aria-hidden="true"></span> 关于该课程设计</a></li>
+	<li  class="dropdown active">
+	    <a href="contactus.html" class="dropdown-toggle" data-toggle="dropdown"
+	     role="button" aria-haspopup="true" aria-expanded="false">
+	     <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+	     作业 <span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	        <li><a href="/crypt/classic">仿射密码</a></li>
+	        <li role="separator" class="divider"></li>
+	        <li class="dropdown-header">对称加密</li>
+
+	        <li><a href="/crypt/des">DES加密</a></li>
+	        <li class="dropdown-header">非对称加密</li>
+	        
+	        <li><a href="/crypt/rsa">RSA加密</a></li>
+	        <li role="separator" class="divider"></li>
+	        <li class="dropdown-header">额外的项目</li>
+	        <li><a href="/crypt/lfsr">序列密码</a></li>
+	        <li><a href="/crypt/dsa">DSA数字签名</a></li>
+	      
+	    </ul>
+	 </li>
+	<li><a href="{{ url_for('contact')}}">
+	    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+	    联系我
+	</a></li>
+
+        
+{% endblock %}
+
+
+{% block page_content %}
+<h1>密码学课程设计</h1>
+<h4>{{ subtitle }}</h4>
+<hr />
+{% block crypt_content %}
+	{{ wtf.quick_form(form) }}
+{% endblock %}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{{ script | safe }}
+{% endblock %}

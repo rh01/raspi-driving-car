@@ -17,7 +17,7 @@ class NeuralNetwork(object):
     def create(self):
         layer_size = np.int32([38400, 32, 4])
         self.model.create(layer_size)
-        self.model.load('mlp_xml/mlp_final.xml')
+        self.model.load('mlp_xml/mlp_final1.xml')
 
     def predict(self, samples):
         ret, resp = self.model.predict(samples)
@@ -223,7 +223,7 @@ class VideoStreamHandler(SocketServer.StreamRequestHandler):
                         self.d_stop_sign = d1
                         self.d_light = d2
 
-                    # cv2.imshow('image', image)
+                    cv2.imshow('image', image)
                     cv2.imshow('mlp_image', half_gray)
 
                     # reshape image
@@ -305,7 +305,7 @@ class ThreadServer(object):
         server = SocketServer.TCPServer((host, port), SensorDataHandler)
         server.serve_forever()
 
-    # distance_thread = threading.Thread(target=server_thread2, args=('192.168.1.126', 8002))
+    # distance_thread = threading.Thread(target=server_thread2, args=('172.14.1.126', 8002))
     # distance_thread.start()
     video_thread = threading.Thread(target=server_thread('172.14.1.126', 8000))
     video_thread.start()

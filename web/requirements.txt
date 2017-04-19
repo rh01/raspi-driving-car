@@ -1,0 +1,4 @@
+Flask==0.10.1
+Flask-Bootstrap==3.3.5.6
+Flask-WTF==0.12
+pycrypto==2.6.1

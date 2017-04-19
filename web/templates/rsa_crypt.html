@@ -1,0 +1,62 @@
+{% extends "crypt.html" %}
+
+{% block crypt_content %}
+	<div class="row">
+		<div class="col-md-8">
+			{{ super() }}
+			<h4>Miller-Rabin 素性测试</h4>
+			<div class="form-inline">
+			  <div class="form-group">
+			    <label for="num">待测数字</label>
+			    <input type="text" class="form-control" id="num">
+			  </div>
+			  <div class="form-group">
+			    <label for="times">测试次数</label>
+			    <input type="text" class="form-control" id="times" value="5000">
+			  </div>
+			  <button type="submit" id="prime_test" class="btn btn-default">测试</button>
+			  <div id="result"></div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<table class="table table-bordered">
+				<thead>
+					<td>字母</td>
+					<td>数字编码</td>
+				</thead>
+				<tbody>
+					{% for char in range(27) %}
+					<tr>
+						{% if char == 0%}
+						<td>空格</td>
+						{% else %}
+						<td>&#{{64+char}};</td>
+						{% endif %}
+						<td>{{ char }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+$("#prime_test").click(function() {
+	num = $("#num").val();
+	times = $("#times").val();
+	$.post("/prime_test", {
+        number: num,
+        times: times
+    }, function(data, status) {
+    	if(status == 400)
+    		$("#result").html("输入数据有误！");
+        if(data == "True")
+        	$("#result").html("通过测试");
+        else
+        	$("#result").html("未通过测试");
+    });
+})
+</script>
+{% endblock %}

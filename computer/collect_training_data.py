@@ -28,15 +28,15 @@ class CollectTrainingData(object):
         self.send_inst = True
 
         # create labels
-        # self.k = np.zeros((3, 3), 'float')
-        # for i in range(3):
-        #     self.k[i, i] = 1
-        # self.temp_label = np.zeros((1, 3), 'float')
-
-        self.k = np.zeros((4, 4), 'float')
-        for i in range(4):
+        self.k = np.zeros((3, 3), 'float')
+        for i in range(3):
             self.k[i, i] = 1
-        self.temp_label = np.zeros((1, 4), 'float')
+        self.temp_label = np.zeros((1, 3), 'float')
+
+        # self.k = np.zeros((4, 4), 'float')
+        # for i in range(4):
+        #     self.k[i, i] = 1
+        # self.temp_label = np.zeros((1, 4), 'float')
 
         pygame.init()
 
@@ -56,8 +56,8 @@ class CollectTrainingData(object):
         print 'Start collecting images...'
         e1 = cv2.getTickCount()
         image_array = np.zeros((1, 38400))
-        label_array = np.zeros((1, 4), 'float')
-        # label_array = np.zeros((1, 3), 'float')
+        # label_array = np.zeros((1, 4), 'float')
+        label_array = np.zeros((1, 3), 'float')
 
 
         # stream video frames one by one
@@ -105,7 +105,7 @@ class CollectTrainingData(object):
                             if key_input[pygame.K_d]:
 
                                 print("Forward Right")
-                                self.conn2.sendall('turnright')
+                                self.conn2.sendall('turnrightO')
 
                                 image_array = np.vstack((image_array, temp_array))
                                 label_array = np.vstack((label_array, self.k[1]))
@@ -116,7 +116,7 @@ class CollectTrainingData(object):
                             elif key_input[pygame.K_a]:
 
                                 print("Forward Left")
-                                self.conn2.sendall('turnleft')
+                                self.conn2.sendall('turnleftO')
 
                                 image_array = np.vstack((image_array, temp_array))
                                 label_array = np.vstack((label_array, self.k[0]))
@@ -133,7 +133,7 @@ class CollectTrainingData(object):
                             # simple orders
                             elif key_input[pygame.K_UP]:
                                 print("Forward")
-                                self.conn2.sendall('up')
+                                self.conn2.sendall('upO')
                                 saved_frame += 1
                                 image_array = np.vstack((image_array, temp_array))
                                 label_array = np.vstack((label_array, self.k[2]))
@@ -151,7 +151,7 @@ class CollectTrainingData(object):
                             
                             elif key_input[pygame.K_RIGHT]:
                                 print("Right")
-                                self.conn2.sendall('right')
+                                self.conn2.sendall('rightO')
 
                                 image_array = np.vstack((image_array, temp_array))
                                 label_array = np.vstack((label_array, self.k[1]))
@@ -161,7 +161,7 @@ class CollectTrainingData(object):
 
                             elif key_input[pygame.K_LEFT]:
                                 print("Left")
-                                self.conn2.sendall('left')
+                                self.conn2.sendall('leftO')
 
                                 image_array = np.vstack((image_array, temp_array))
                                 label_array = np.vstack((label_array, self.k[0]))
@@ -186,7 +186,7 @@ class CollectTrainingData(object):
             train_labels = label_array[1:, :]
 
             # save training data as a numpy file
-            np.savez('training_data/test009.npz', train=train, train_labels=train_labels)
+            np.savez('training_data/test017.npz', train=train, train_labels=train_labels)
 
             e2 = cv2.getTickCount()
             # calculate streaming duration

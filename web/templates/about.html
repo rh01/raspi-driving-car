@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block navbarl %}
+
+	<li><a href="{{ url_for('index') }}"><span class="glyphicon glyphicon-home"
+	     aria-hidden="true"></span> 首页</a></li>
+	<li class="active"><a href="{{ url_for('aboutass') }}"><span class="glyphicon glyphicon-info-sign"
+	     aria-hidden="true"></span> 关于该课程设计</a></li>
+	<li  class="dropdown">
+	    <a href="contactus.html" class="dropdown-toggle" data-toggle="dropdown"
+	     role="button" aria-haspopup="true" aria-expanded="false">
+	     <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+	     作业 <span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	        <li><a href="/crypt/classic">仿射密码</a></li>
+	        <li role="separator" class="divider"></li>
+            <li class="dropdown-header">对称加密</li>
+	        
+	        <li><a href="/crypt/des">DES加密</a></li>
+	        <li class="dropdown-header">非对称加密</li>
+	        
+	        <li><a href="/crypt/rsa">RSA加密</a></li>
+	        <li role="separator" class="divider"></li>
+	        <li class="dropdown-header">额外的项目</li>
+	        <li><a href="/crypt/lfsr">序列密码</a></li>
+	        <li><a href="/crypt/dsa">DSA数字签名</a></li>
+	      
+	    </ul>
+	 </li>
+	<li><a href="{{ url_for('contact')}}">
+	    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+	    联系我
+	</a></li>
+
+	
+{% endblock %}
+
+
+{% block page_content %}
+ <div id="container">
+      
+      <div class="clearer"></div>
+      <article class="main-column">
+          <h1>about</h1>
+  <h2 id="personal-links">Personal Links</h2>
+<ul>
+<li><a href="http://www.github.com/rh01">http://www.github.com/rh01</a></li>
+</ul>
+<h2 id="contact-details">Contact Details</h2>
+<ul>
+<li>Email: heng960509 <em>AT</em> gmail <em>DOT</em> com</li>
+</ul>
+<h2 id="links">Links</h2>
+<p><em>(in (almost) no special order)</em></p>
+<ul>
+
+</ul>
+<h2 id="contact-details">ppt</h2>
+
+<ul>
+<li>演示文档,<a href="http://iotppt.github.io/%E5%AF%86%E7%A0%81%E5%AD%A6.html">点击我</a></li>
+</ul>
+</li>
+
+</ul>
+
+      <div class="clearer"></div>
+     
+{% endblock %}

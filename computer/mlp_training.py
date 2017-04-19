@@ -7,8 +7,8 @@ e0 = cv2.getTickCount()
 
 # load training data
 image_array = np.zeros((1, 38400))
-label_array = np.zeros((1, 4), 'float')
-# label_array = np.zeros((1, 3), 'float')
+# label_array = np.zeros((1, 4), 'float')
+label_array = np.zeros((1, 3), 'float')
 
 training_data = glob.glob('training_data/*.npz')
 
@@ -35,8 +35,8 @@ print 'Loading image duration:', time0
 e1 = cv2.getTickCount()
 
 # create MLP
-layer_sizes = np.int32([38400, 32, 4])
-# layer_sizes = np.int32([38400, 32, 3])
+# layer_sizes = np.int32([38400, 32, 4])
+layer_sizes = np.int32([38400, 32, 3])
 model = cv2.ANN_MLP()
 model.create(layer_sizes)
 criteria = (cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS, 500, 0.0001)

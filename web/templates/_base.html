@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图像搜索</title>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('index')}}"></a>
+        </div>
+
+
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+
+                <li><a href="{{ url_for('index') }}"><span class="glyphicon glyphicon-home"
+                     aria-hidden="true"></span> 首页</a></li>
+                <li><a href="{{ url_for('aboutass') }}"><span class="glyphicon glyphicon-info-sign"
+                     aria-hidden="true"></span> 关于该课程设计</a></li>
+                <li class="dropdown">
+                    <a href="contactus.html" class="dropdown-toggle" data-toggle="dropdown"
+                     role="button" aria-haspopup="true" aria-expanded="false">
+                     <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                     作业 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/crypt/classic">仿射密码</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">对称加密</li>
+                        <li><a href="/crypt/des">DES加密</a></li>
+                        <li class="dropdown-header">非对称加密</li>
+                        <li><a href="/crypt/rsa">RSA加密</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">额外的项目</li>
+                        <li><a href="/crypt/lfsr">序列密码</a></li>
+                        <li><a href="/crypt/dsa">DSA数字签名</a></li>
+                        <li><a href="#">AES加密</a></li>
+
+
+
+                    </ul>
+                 </li>
+                <li><a href="{{ url_for('contact')}}">
+        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+        联系我
+    </a></li>
+                
+            </ul>
+            
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown active">
+                      <a  class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false">
+                       <span class="glyphicon glyphicon-heart-empty"></span>
+                       计算机视觉项目 <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="{{ url_for('image_search')}}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>  图像搜索</a></li>
+                          
+                          <li role="separator" class="divider"></li>
+                          <li class="dropdown-header">识别技术</li>
+                          <li><a href="{{ url_for('recogresult')}}">手写数字识别</a></li>
+                          <li><a href="/crypt/dsa">图像分类</a></li>
+                          <li><a href="#">人脸识别/行人检测</a></li>
+                      </ul>
+            </li>
+            </ul>
+        </li>
+      </ul>
+        </div>
+    </div>
+
+
+</nav>
+
+<body>
+
+  <div class="container center-container">
+    {% for message in get_flashed_messages() %}
+      <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+
+    {% if error %}
+      <p id="error"><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
+  </div>
+
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
