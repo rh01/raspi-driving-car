@@ -28,15 +28,11 @@ class CollectTrainingData(object):
         self.send_inst = True
 
         # create labels
-        self.k = np.zeros((3, 3), 'float')
-        for i in range(3):
+        self.k = np.zeros((4, 4), 'float')
+        for i in range(4):
             self.k[i, i] = 1
-        self.temp_label = np.zeros((1, 3), 'float')
+        self.temp_label = np.zeros((1, 4), 'float')
 
-        # self.k = np.zeros((4, 4), 'float')
-        # for i in range(4):
-        #     self.k[i, i] = 1
-        # self.temp_label = np.zeros((1, 4), 'float')
 
         pygame.init()
 
@@ -56,8 +52,8 @@ class CollectTrainingData(object):
         print 'Start collecting images...'
         e1 = cv2.getTickCount()
         image_array = np.zeros((1, 38400))
-        # label_array = np.zeros((1, 4), 'float')
-        label_array = np.zeros((1, 3), 'float')
+        label_array = np.zeros((1, 4), 'float')
+        # label_array = np.zeros((1, 3), 'float')
 
 
         # stream video frames one by one
@@ -65,18 +61,12 @@ class CollectTrainingData(object):
             stream_bytes = ' '
             frame = 1
             while self.send_inst:
-
-                # data = self.conn2.recv(1024)
-                # print 'Received', repr(data)
-
-
                 stream_bytes += self.connection.read(1024)
                 first = stream_bytes.find('\xff\xd8')
                 last = stream_bytes.find('\xff\xd9')
                 if first != -1 and last != -1:
                     jpg = stream_bytes[first:last + 2]
                     stream_bytes = stream_bytes[last + 2:]
-                    # image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_GRAYSCALE)
                     image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), 0)
                     
                     # select lower half of the image
@@ -88,7 +78,6 @@ class CollectTrainingData(object):
                     cv2.imshow('roi_image', roi)
                     cv2.imshow('image', image)
 
-                    # print 1
                     # reshape the roi image into one row array
                     temp_array = roi.reshape(1, 38400).astype(np.float32)
                     
@@ -100,85 +89,50 @@ class CollectTrainingData(object):
                         if event.type == KEYDOWN:
                             key_input = pygame.key.get_pressed()
 
-                            # complex orders
-                            # if key_input[pygame.K_UP] and key_input[pygame.K_RIGHT]:
                             if key_input[pygame.K_d]:
-
                                 print("Forward Right")
                                 self.conn2.sendall('turnrightO')
-
                                 image_array = np.vstack((image_array, temp_array))
                                 label_array = np.vstack((label_array, self.k[1]))
                                 saved_frame += 1
-                                # self.display(1)
 
-                            # elif key_input[pygame.K_UP] and key_input[pygame.K_LEFT]:
                             elif key_input[pygame.K_a]:
-
                                 print("Forward Left")
                                 self.conn2.sendall('turnleftO')
-
                                 image_array = np.vstack((image_array, temp_array))
                                 label_array = np.vstack((label_array, self.k[0]))
                                 saved_frame += 1
-                                # self.display(2)
 
-                            # elif key_input[pygame.K_DOWN] and key_input[pygame.K_RIGHT]:
-                            #     print("Reverse Right")
-
-                            
-                            # elif key_input[pygame.K_DOWN] and key_input[pygame.K_LEFT]:
-                            #     print("Reverse Left")
-
-                            # simple orders
                             elif key_input[pygame.K_UP]:
                                 print("Forward")
                                 self.conn2.sendall('upO')
                                 saved_frame += 1
                                 image_array = np.vstack((image_array, temp_array))
                                 label_array = np.vstack((label_array, self.k[2]))
-                                # self.forward()
-
-                            # elif key_input[pygame.K_DOWN]:
-                            #     print("Reverse")
-                            #     self.conn2.sendall('down')
-
-                            #     saved_frame += 1
-                            #     image_array = np.vstack((image_array, temp_array))
-                            #     label_array = np.vstack((label_array, self.k[3]))
-
-
                             
-                            elif key_input[pygame.K_RIGHT]:
-                                print("Right")
-                                self.conn2.sendall('rightO')
+                            # elif key_input[pygame.K_RIGHT]:
+                            #     print("Right")
+                            #     self.conn2.sendall('rightO')
+                            #     image_array = np.vstack((image_array, temp_array))
+                            #     label_array = np.vstack((label_array, self.k[1]))
+                            #     saved_frame += 1
 
-                                image_array = np.vstack((image_array, temp_array))
-                                label_array = np.vstack((label_array, self.k[1]))
-                                saved_frame += 1
-                                # self.connGPIO.send('RIGHT')
-
-
-                            elif key_input[pygame.K_LEFT]:
-                                print("Left")
-                                self.conn2.sendall('leftO')
-
-                                image_array = np.vstack((image_array, temp_array))
-                                label_array = np.vstack((label_array, self.k[0]))
-                                saved_frame += 1
+                            # elif key_input[pygame.K_LEFT]:
+                            #     print("Left")
+                            #     self.conn2.sendall('leftO')
+                            #     image_array = np.vstack((image_array, temp_array))
+                            #     label_array = np.vstack((label_array, self.k[0]))
+                            #     saved_frame += 1
 
 
                             elif key_input[pygame.K_x] or key_input[pygame.K_q]:
                                 print 'exit'
                                 self.conn2.sendall('clean')
-
                                 self.send_inst = False
-                                # self.connGPIO.send('CLEAN')
                                 break
                                     
                         elif event.type == pygame.KEYUP:
-                            # self.ser.write(chr(0))
-                            # self.display(0)
+
                             print '0'
             
             # save training images and labels
