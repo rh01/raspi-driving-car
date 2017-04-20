@@ -233,11 +233,11 @@ class VideoStreamHandler(SocketServer.StreamRequestHandler):
                     prediction = self.model.predict(image_array)
 
                     # stop conditions
-                    if sensor_data is not None and sensor_data < 30:
+                    if sensor_data is not None and sensor_data < 35:
                         print("Stop, obstacle in front")
                         self.rc_car.stop()
                     
-                    elif 0 < self.d_stop_sign < 25 and stop_sign_active:
+                    elif 0 < self.d_stop_sign < 35 and stop_sign_active:
                         print("Stop sign ahead")
                         self.rc_car.stop()
 
@@ -278,7 +278,7 @@ class VideoStreamHandler(SocketServer.StreamRequestHandler):
                         self.rc_car.steer(prediction)
 
                         self.stop_start = cv2.getTickCount()
-                        self.d_stop_sign = 25
+                        self.d_stop_sign = 35
 
                         if stop_sign_active is False:
                             self.drive_time_after_stop = (self.stop_start - self.stop_finish)/cv2.getTickFrequency()
