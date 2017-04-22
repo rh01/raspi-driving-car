@@ -1,9 +1,17 @@
+'''
+NOTES
+Goal: Make nn take the second-best from the previous prediction.
+Result:
+
+THIS ALSO SEEMS TO BE A BUST. KEEPS GETTING STUCK IN THESE LOOPS OF (predict; ctrl-z), ETC.
+'''
+
 # import car
 import cv2
 import numpy as np
 import os
+# import serial
 import socket
-import SocketServer
 import threading
 import time
 
@@ -12,13 +20,10 @@ from keras.layers import Dense, Activation
 from keras.models import Sequential
 import keras.models
 
-
+dir_log = ['Forward']
 SIGMA = 0.33
 stop_classifier = cv2.CascadeClassifier('cascade_xml/stop_sign.xml')
 timestr = time.strftime('%Y%m%d_%H%M%S')
-
-# distance data measured by ultrasonic sensor
-sensor_data = " "
 
 
 class RCDriver(object):
@@ -27,50 +32,42 @@ class RCDriver(object):
 
         # FORWARD
         if np.all(prediction   == [ 0., 0., 1.]):
-            car.forward(100)
-            car.pause(300)
+            # car.forward(150)
+            # car.pause(300)
+            time.sleep(0.3)
+
+            dir_log.append('Forward')
             print 'Forward'
 
         # FORWARD-LEFT
         elif np.all(prediction == [ 1., 0., 0.]):
-            car.left(300)
-            car.forward_left(200)
-            car.left(700)
-            car.pause(200)
+            # car.left(300)
+            # car.forward_left(200)
+            # car.left(700)
+            # car.pause(200)
+            time.sleep(0.2)
+
+            dir_log.append('Left')
             print 'Left'
 
         # FORWARD-RIGHT
         elif np.all(prediction == [ 0., 1., 0.]):
-            car.right(300)
-            car.forward_right(200)
-            car.right(700)
-            car.pause(200)
+            # car.right(300)
+            # car.forward_right(200)
+            # car.right(700)
+            # car.pause(200)
+            time.sleep(0.2)
+
+            dir_log.append('Right')
             print 'Right'
 
     def stop(self):
         print '* * * STOPPING! * * *'
-        car.pause(5000)
+        # car.pause(5000)
+        time.sleep(5)
 
 
 rcdriver = RCDriver()
-
-
-class SensorDataHandler(SocketServer.BaseRequestHandler):
-
-    data = " "
-
-    def handle(self):
-        global sensor_data
-        try:
-            while self.data:
-                self.data = self.request.recv(1024)
-                sensor_data = round(float(self.data), 1)
-                #print "{} sent:".format(self.client_address[0])
-                print sensor_data
-        finally:
-            print "Connection closed on thread 2"
-
-
 
 
 class ObjectDetection(object):
@@ -81,17 +78,36 @@ class ObjectDetection(object):
     def detect(self, cascade_classifier, gray_image, image):
 
         # STOP SIGN
+        # stop_sign_detected = cascade_classifier.detectMultiScale(
+        #     gray_image,
+        #     scaleFactor=1.1,
+        #     minNeighbors=10,
+        #     minSize=(50, 50),
+        #     maxSize=(55, 55))
         stop_sign_detected = cascade_classifier.detectMultiScale(
             gray_image,
             scaleFactor=1.1,
-            minNeighbors=10,
-            minSize=(35, 35),
-            maxSize=(55, 55))
+            minNeighbors=5,
+            minSize=(30, 30),
+            flags=cv2.CASCADE_SCALE_IMAGE
+        )
 
-        # Draw a rectangle around stop sign
+
+        # # Draw a rectangle around stop sign
+        # for (x_pos, y_pos, width, height) in stop_sign_detected:
+        #     cv2.rectangle(image, (x_pos+5, y_pos+5), (x_pos+width-5, y_pos+height-5), (0, 0, 255), 2)
+        #     cv2.putText(image, 'STOP SIGN', (x_pos, y_pos-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 2)
+
+         # draw a rectangle around the objects
         for (x_pos, y_pos, width, height) in stop_sign_detected:
-            cv2.rectangle(image, (x_pos+5, y_pos+5), (x_pos+width-5, y_pos+height-5), (0, 0, 255), 2)
-            cv2.putText(image, 'STOP SIGN', (x_pos, y_pos-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 2)
+            cv2.rectangle(image, (x_pos+5, y_pos+5), (x_pos+width-5, y_pos+height-5), (255, 255, 255), 2)
+            v = y_pos + height - 5
+            #print(x_pos+5, y_pos+5, x_pos+width-5, y_pos+height-5, width, height)
+
+            # stop sign
+            if width/height == 1:
+                cv2.putText(image, 'STOP', (x_pos, y_pos-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                
 
         # Execute the full stop
         if np.any(stop_sign_detected):
@@ -103,25 +119,90 @@ class ObjectDetection(object):
         hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
         orig = image.copy()
 
-    	# Look for predestrians in the image
-    	(rects, weights) = hog.detectMultiScale(image, winStride=(4, 4),
-    		padding=(8, 8), scale=1.05)
+        # Look for predestrians in the image
+        (rects, weights) = hog.detectMultiScale(image, winStride=(4, 4),
+            padding=(8, 8), scale=1.05)
 
-    	# Draw the ORIGINAL bounding boxes
-    	for (x, y, w, h) in rects:
-    		cv2.rectangle(orig, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        # Draw the ORIGINAL bounding boxes
+        for (x, y, w, h) in rects:
+            cv2.rectangle(orig, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
-    	# Apply 'non-maxima suppression' to the bounding boxes using a fairly large overlap threshold to try to maintain overlapping
-    	# boxes that are still people
-    	rects = np.array([[x, y, x + w, y + h] for (x, y, w, h) in rects])
-    	pick = non_max_suppression(rects, probs=None, overlapThresh=0.65)
+        # Apply 'non-maxima suppression' to the bounding boxes using a fairly large overlap threshold to try to maintain overlapping
+        # boxes that are still people
+        rects = np.array([[x, y, x + w, y + h] for (x, y, w, h) in rects])
+        pick = non_max_suppression(rects, probs=None, overlapThresh=0.65)
 
-    	# Draw the FINAL bounding boxes
-    	for (xA, yA, xB, yB) in pick:
+        # Draw the FINAL bounding boxes
+        for (xA, yA, xB, yB) in pick:
             cv2.rectangle(image, (xA, yA), (xB, yB), (0, 255, 0), 2)
             cv2.putText(image, 'PEDESTRIAN', (xA, yA-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), 2)
 
 obj_detection = ObjectDetection()
+
+
+class TrustButVerify(object):
+
+    global dir_log
+
+    def __init__(self):
+        # Arbitrarily designating a 'corner' as some % of width from either edge (e.g. 15%)
+        self.corner_pct = .40
+
+
+    def scan_for_signal(self, filtered_img):
+        # Lower Left and Right corners
+        last_row = filtered_img[-1]
+
+        img_total_width  = len(last_row)
+        img_corner_width = img_total_width * self.corner_pct
+
+        left_corner  = last_row[  : img_corner_width + 1]
+        right_corner = last_row[ -img_corner_width : ]
+
+        # GOAL: Need a sum of 255 in both corners, which means at least the edge of a lane marker is visible in a corner
+        # If either corner < 255, then return False to activate ctrl-z mode
+        if sum(left_corner) < 255 or sum(right_corner) < 255:
+            print '\nSIGNAL IN ONE CORNER NOT PRESENT'
+            return False
+        return True
+
+
+    def ctrl_z(self):
+
+        print '< < < CTRL-Z MODE > > >'
+
+        last_dir = dir_log[-1]
+
+        # Forward -> Reverse
+        if last_dir == 'Forward':
+            # car.reverse(200)
+            # car.pause(500)
+            time.sleep(0.5)
+
+            print '< REVERSE >\n'
+
+        # Left -> Reverse-Left
+        elif last_dir == 'Left':
+            # car.left(300)
+            # car.reverse_left(275)
+            # car.left(700)
+            # car.pause(500)
+            time.sleep(0.5)
+            print '< REVERSE-LEFT >\n'
+
+        # Right -> Reverse-Right
+        elif last_dir == 'Right':
+            # car.right(300)
+            # car.reverse_right(275)
+            # car.right(700)
+            # car.pause(500)
+            time.sleep(0.5)
+
+            print '< REVERSE-RIGHT >\n'
+
+        return
+
+TBV = TrustButVerify()
 
 
 
@@ -137,6 +218,8 @@ class NeuralNetwork(object):
         # PiVideoStream class object is now here.
         self.piVideoObject = piVideoObject
         self.rcdriver = RCDriver()
+
+        print 'NeuralNetwork init OK'
 
         self.fetch()
 
@@ -162,15 +245,33 @@ class NeuralNetwork(object):
     def predict(self, image):
         image_array = self.preprocess(image)
         y_hat       = self.model.predict(image_array)
-        i_max       = np.argmax(y_hat)
-        y_hat_final = np.zeros((1,3))
-        np.put(y_hat_final, i_max, 1)
-        return y_hat_final[0], y_hat
+
+        # First choice
+        i_max_first       = np.argmax(y_hat)
+        y_hat_final_first = np.zeros((1,4))
+        np.put(y_hat_final_first, i_max_first, 1)
+
+        # Need to convert y_hat to a list to sort and find the second best pred.
+        y_hat_list = []
+        for each in y_hat[0]:
+            y_hat_list.append(each)
+
+        # Second choice
+        i_max_second = np.argsort(y_hat_list)[::-1][1]
+        y_hat_final_second = np.zeros((1,4))
+        np.put(y_hat_final_second, i_max_second, 1)
+
+        first_choice_pred  = y_hat_final_first[0]
+        second_choice_pred = y_hat_final_second[0]
+        return first_choice_pred, second_choice_pred, y_hat
 
 
     def fetch(self):
 
         frame = 0
+        second_best = None
+        previous_probas = None
+        pred_rank = None
 
         while self.receiving:
 
@@ -197,39 +298,60 @@ class NeuralNetwork(object):
 
             # Show streaming images
             cv2.imshow('Original', image)
-            cv2.imshow('What the model sees', auto)
+            # cv2.imshow('What the model sees', auto)
 
-            # Neural network model makes prediciton
-            # prediction = self.model.predict(auto)
-            prediction, probas = self.predict(auto)
+
+            # *** NEW FEATURE: Trust but verify (TBV) ***
+            # Check for signal in lower corners of image (boolean). If True, then s'all good. If Not, then...
+            if not TBV.scan_for_signal(auto):
+
+                if frame == 0:
+                    continue
+
+                # TBV.ctrl_z() takes car back one step, and 'prediction' is now the second_best from previous run.
+                TBV.ctrl_z()
+                prediction = second_best
+                probas = previous_probas
+                pred_rank = 'second'
+
+            # If TBV.scan_for_signal returned True, then all is well. ctrl_z_mode is False, and model makes prediciton on argmax proba.
+            else:
+                first_choice, second_choice, probas = self.predict(auto)
+                second_best = second_choice     # second_choice from this run is assigned to global var, in case it's needed in next run.
+                previous_probas = probas
+                prediction  = first_choice
+                pred_rank = 'first'
 
             # Save frame and prediction record for debugging research
-            prediction_english = None
+            prediction_english       = None
             prediction_english_proba = None
 
-            proba_left, proba_right, proba_forward = probas[0]
+            proba_left, proba_right, proba_forward, proba_backward = probas[0]
 
-            if np.all(prediction   == [ 0., 0., 1.]):
+            if np.all(prediction   == [ 0., 0., 1., 0.]):
                 prediction_english = 'FORWARD'
                 prediction_english_proba = proba_forward
 
-            elif np.all(prediction == [ 1., 0., 0.]):
+            elif np.all(prediction == [ 1., 0., 0., 0.]):
                 prediction_english = 'LEFT'
                 prediction_english_proba = proba_left
 
-            elif np.all(prediction == [ 0., 1., 0.]):
+            elif np.all(prediction == [ 0., 1., 0., 0.]):
                 prediction_english = 'RIGHT'
                 prediction_english_proba = proba_right
 
-
-            # cv2.putText(gray, "Model prediction: {}".format(prediction_english), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, .45, (255, 255, 0), 1)
-            cv2.putText(gray, "Prediction (sig={}): {}, {:>05}".format(SIGMA, prediction_english, prediction_english_proba), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, .45, (255, 255, 0), 1)
+            # Text on saved image
+            cv2.putText(gray, "Prediction ({}): {}, {:>05}".format(pred_rank, prediction_english, prediction_english_proba), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, .45, (255, 255, 0), 1)
+            cv2.putText(gray, "Forward: {}".format(proba_forward), (10, 40), cv2.FONT_HERSHEY_SIMPLEX, .45, (255, 255, 0), 1)
+            cv2.putText(gray, "Left:    {}".format(proba_left), (10, 60), cv2.FONT_HERSHEY_SIMPLEX, .45, (255, 255, 0), 1)
+            cv2.putText(gray, "Right:   {}".format(proba_right), (10, 80), cv2.FONT_HERSHEY_SIMPLEX, .45, (255, 255, 0), 1)
+            cv2.imshow('Original', gray)
+            # cv2.imshow('What the model sees', auto)
             cv2.imwrite('test_frames_temp/frame{:>05}.jpg'.format(frame), gray)
             frame += 1
 
             # Send prediction to driver to tell it how to steer
             self.rcdriver.steer(prediction)
-
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 self.stop()
@@ -237,33 +359,30 @@ class NeuralNetwork(object):
 
 
 
-
 class PiVideoStream(object):
 
     def __init__(self):
-        # self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # # self.server_socket.bind(('192.168.1.66', 8000)) # The IP address of your computer (Paul's MacBook Air). This script should run before the one on the Pi.
-        # self.server_socket.bind(('10.10.10.1', 8000)) # The IP address of your computer (Paul's MacBook Air). This script should run before the one on the Pi.
-        #
-        #
-        # print 'Listening...'
-        # self.server_socket.listen(0)
-        #
-        # # Accept a single connection ('rb' is 'read binary')
-        # self.connection = self.server_socket.accept()[0].makefile('rb')
-        #
-        # # initialize the frame and the variable used to indicate
-        # # if the thread should be stopped
-        # self.frame = None
-        # self.stopped = False
-        # self.stream_bytes = ' '
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # self.server_socket.bind(('192.168.1.66', 8000)) # The IP address of your computer (Paul's MacBook Air). This script should run before the one on the Pi.
+        self.server_socket.bind(('172.14.1.126', 8000)) # The IP address of your computer (Paul's MacBook Air). This script should run before the one on the Pi.
+
+        print 'Listening...'
+        self.server_socket.listen(0)
+
+        # Accept a single connection ('rb' is 'read binary')
+        self.connection = self.server_socket.accept()[0].makefile('rb')
+
+        # initialize the frame and the variable used to indicate
+        # if the thread should be stopped
+        self.frame = None
+        self.stopped = False
+        self.stream_bytes = ' '
 
         self.start()
 
 
-
     def start(self):
-    	# start the thread to read frames from the video stream
+        # start the thread to read frames from the video stream
         print 'Starting PiVideoStream thread...'
         print ' \"Hold on to your butts!\" '
 
@@ -288,49 +407,28 @@ class PiVideoStream(object):
                 self.stream_bytes = self.stream_bytes[last + 2:]
 
 
-	def read(self):
-		# return the frame most recently read
-		return self.frame
-
-
-
-
-class ThreadServer(object):
-
-    def server_thread(host, port):
-        server = SocketServer.TCPServer((host, port), PiVideoStream)
-        server.serve_forever()
-
-    def server_thread2(host, port):
-        server = SocketServer.TCPServer((host, port), SensorDataHandler)
-        server.serve_forever()
-
-    distance_thread = threading.Thread(target=server_thread2, args=('10.10.10.1', 8002))
-    distance_thread.start()
-    video_thread = threading.Thread(target=server_thread, args=('10.10.10.1', 8000))
-    video_thread.start()
+    def read(self):
+        # return the frame most recently read
+        return self.frame
 
 
 
 if __name__ == '__main__':
     try:
-        ThreadServer()
-
+        # Create an instance of PiVideoStream class
+        video_stream = PiVideoStream()
 
     except KeyboardInterrupt:
+
+        car.stop()
+
         # Rename the folder that collected all of the test frames. Then make a new folder to collect next round of test frames.
         os.rename(  './test_frames_temp', './test_frames_SAVED/test_frames_{}'.format(timestr))
         os.makedirs('./test_frames_temp')
         print '\nTerminating...\n'
-        car.pause(1000)
 
-        # # Close video_stream thread.
-        # video_stream = PiVideoStream()
-        # video_stream.stop()
-        # video_stream.connection.close()
-        #
-        # # Close serial connection to Arduino controller.
-        # ser = serial.Serial(port.device, 9600)
-        # ser.close()
+        # Close video_stream thread.
+        video_stream = PiVideoStream()
+        video_stream.connection.close()
 
         print '\nDone.\n'
