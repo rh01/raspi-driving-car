@@ -25,10 +25,53 @@ SIGMA = 0.33
 stop_classifier = cv2.CascadeClassifier('cascade_xml/stop_sign.xml')
 timestr = time.strftime('%Y%m%d_%H%M%S')
 
+<<<<<<< HEAD
 
 # class RCDriver(object):
 
 #     def steer(self, prediction):
+=======
+
+class RCDriver(object):
+
+    def steer(self, prediction):
+
+        # FORWARD
+        if np.all(prediction   == [ 0., 0., 1.]):
+            # car.forward(150)
+            # car.pause(300)
+            time.sleep(0.3)
+
+            dir_log.append('Forward')
+            print 'Forward'
+
+        # FORWARD-LEFT
+        elif np.all(prediction == [ 1., 0., 0.]):
+            # car.left(300)
+            # car.forward_left(200)
+            # car.left(700)
+            # car.pause(200)
+            time.sleep(0.2)
+
+            dir_log.append('Left')
+            print 'Left'
+
+        # FORWARD-RIGHT
+        elif np.all(prediction == [ 0., 1., 0.]):
+            # car.right(300)
+            # car.forward_right(200)
+            # car.right(700)
+            # car.pause(200)
+            time.sleep(0.2)
+
+            dir_log.append('Right')
+            print 'Right'
+
+    def stop(self):
+        print '* * * STOPPING! * * *'
+        # car.pause(5000)
+        time.sleep(5)
+>>>>>>> origin/master
 
 #         # FORWARD
 #         if np.all(prediction   == [ 0., 0., 1.]):
@@ -55,6 +98,7 @@ timestr = time.strftime('%Y%m%d_%H%M%S')
 #             dir_log.append('Right')
 #             print 'Right'
 
+<<<<<<< HEAD
 #     def stop(self):
 #         print '* * * STOPPING! * * *'
 #         car.pause(5000)
@@ -63,6 +107,8 @@ timestr = time.strftime('%Y%m%d_%H%M%S')
 # rcdriver = RCDriver()
 
 
+=======
+>>>>>>> origin/master
 class ObjectDetection(object):
 
     # global rcdriver
@@ -71,17 +117,42 @@ class ObjectDetection(object):
     def detect(self, cascade_classifier, gray_image, image):
 
         # STOP SIGN
+        # stop_sign_detected = cascade_classifier.detectMultiScale(
+        #     gray_image,
+        #     scaleFactor=1.1,
+        #     minNeighbors=10,
+        #     minSize=(50, 50),
+        #     maxSize=(55, 55))
         stop_sign_detected = cascade_classifier.detectMultiScale(
             gray_image,
             scaleFactor=1.1,
+<<<<<<< HEAD
             minNeighbors=10,
             minSize=(50, 50),
             maxSize=(55, 55))
+=======
+            minNeighbors=5,
+            minSize=(30, 30),
+            flags=cv2.CASCADE_SCALE_IMAGE
+        )
+>>>>>>> origin/master
 
-        # Draw a rectangle around stop sign
+
+        # # Draw a rectangle around stop sign
+        # for (x_pos, y_pos, width, height) in stop_sign_detected:
+        #     cv2.rectangle(image, (x_pos+5, y_pos+5), (x_pos+width-5, y_pos+height-5), (0, 0, 255), 2)
+        #     cv2.putText(image, 'STOP SIGN', (x_pos, y_pos-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 2)
+
+         # draw a rectangle around the objects
         for (x_pos, y_pos, width, height) in stop_sign_detected:
-            cv2.rectangle(image, (x_pos+5, y_pos+5), (x_pos+width-5, y_pos+height-5), (0, 0, 255), 2)
-            cv2.putText(image, 'STOP SIGN', (x_pos, y_pos-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 2)
+            cv2.rectangle(image, (x_pos+5, y_pos+5), (x_pos+width-5, y_pos+height-5), (255, 255, 255), 2)
+            v = y_pos + height - 5
+            #print(x_pos+5, y_pos+5, x_pos+width-5, y_pos+height-5, width, height)
+
+            # stop sign
+            if width/height == 1:
+                cv2.putText(image, 'STOP', (x_pos, y_pos-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                
 
         # Execute the full stop
         if np.any(stop_sign_detected):
@@ -138,11 +209,16 @@ class TrustButVerify(object):
         # GOAL: Need a sum of 255 in both corners, which means at least the edge of a lane marker is visible in a corner
         # If either corner < 255, then return False to activate ctrl-z mode
         if sum(left_corner) < 255 or sum(right_corner) < 255:
+<<<<<<< HEAD
             print ('\nSIGNAL IN ONE CORNER NOT PRESENT')
+=======
+            print '\nSIGNAL IN ONE CORNER NOT PRESENT'
+>>>>>>> origin/master
             return False
         return True
 
 
+<<<<<<< HEAD
     # def ctrl_z(self):
 
     #     print ('< < < CTRL-Z MODE > > >')
@@ -172,6 +248,42 @@ class TrustButVerify(object):
     #         print '< REVERSE-RIGHT >\n'
 
     #     return
+=======
+    def ctrl_z(self):
+
+        print '< < < CTRL-Z MODE > > >'
+
+        last_dir = dir_log[-1]
+
+        # Forward -> Reverse
+        if last_dir == 'Forward':
+            # car.reverse(200)
+            # car.pause(500)
+            time.sleep(0.5)
+
+            print '< REVERSE >\n'
+
+        # Left -> Reverse-Left
+        elif last_dir == 'Left':
+            # car.left(300)
+            # car.reverse_left(275)
+            # car.left(700)
+            # car.pause(500)
+            time.sleep(0.5)
+            print '< REVERSE-LEFT >\n'
+
+        # Right -> Reverse-Right
+        elif last_dir == 'Right':
+            # car.right(300)
+            # car.reverse_right(275)
+            # car.right(700)
+            # car.pause(500)
+            time.sleep(0.5)
+
+            print '< REVERSE-RIGHT >\n'
+
+        return
+>>>>>>> origin/master
 
 TBV = TrustButVerify()
 
@@ -191,6 +303,8 @@ class NeuralNetwork(object):
         # self.rcdriver = RCDriver()
 
         print ('NeuralNetwork init OK')
+
+        print 'NeuralNetwork init OK'
 
         self.fetch()
 
@@ -219,7 +333,11 @@ class NeuralNetwork(object):
 
         # First choice
         i_max_first       = np.argmax(y_hat)
+<<<<<<< HEAD
         y_hat_final_first = np.zeros((1,3))
+=======
+        y_hat_final_first = np.zeros((1,4))
+>>>>>>> origin/master
         np.put(y_hat_final_first, i_max_first, 1)
 
         # Need to convert y_hat to a list to sort and find the second best pred.
@@ -229,7 +347,11 @@ class NeuralNetwork(object):
 
         # Second choice
         i_max_second = np.argsort(y_hat_list)[::-1][1]
+<<<<<<< HEAD
         y_hat_final_second = np.zeros((1,3))
+=======
+        y_hat_final_second = np.zeros((1,4))
+>>>>>>> origin/master
         np.put(y_hat_final_second, i_max_second, 1)
 
         first_choice_pred  = y_hat_final_first[0]
@@ -269,8 +391,17 @@ class NeuralNetwork(object):
 
             # Show streaming images
             cv2.imshow('Original', image)
-            cv2.imshow('What the model sees', auto)
+            # cv2.imshow('What the model sees', auto)
 
+
+            # *** NEW FEATURE: Trust but verify (TBV) ***
+            # Check for signal in lower corners of image (boolean). If True, then s'all good. If Not, then...
+            if not TBV.scan_for_signal(auto):
+
+                if frame == 0:
+                    continue
+
+<<<<<<< HEAD
 
             # *** NEW FEATURE: Trust but verify (TBV) ***
             # Check for signal in lower corners of image (boolean). If True, then s'all good. If Not, then...
@@ -281,6 +412,10 @@ class NeuralNetwork(object):
 
                 # TBV.ctrl_z() takes car back one step, and 'prediction' is now the second_best from previous run.
                 # TBV.ctrl_z()
+=======
+                # TBV.ctrl_z() takes car back one step, and 'prediction' is now the second_best from previous run.
+                TBV.ctrl_z()
+>>>>>>> origin/master
                 prediction = second_best
                 probas = previous_probas
                 pred_rank = 'second'
@@ -297,17 +432,17 @@ class NeuralNetwork(object):
             prediction_english       = None
             prediction_english_proba = None
 
-            proba_left, proba_right, proba_forward = probas[0]
+            proba_left, proba_right, proba_forward, proba_backward = probas[0]
 
-            if np.all(prediction   == [ 0., 0., 1.]):
+            if np.all(prediction   == [ 0., 0., 1., 0.]):
                 prediction_english = 'FORWARD'
                 prediction_english_proba = proba_forward
 
-            elif np.all(prediction == [ 1., 0., 0.]):
+            elif np.all(prediction == [ 1., 0., 0., 0.]):
                 prediction_english = 'LEFT'
                 prediction_english_proba = proba_left
 
-            elif np.all(prediction == [ 0., 1., 0.]):
+            elif np.all(prediction == [ 0., 1., 0., 0.]):
                 prediction_english = 'RIGHT'
                 prediction_english_proba = proba_right
 
@@ -316,13 +451,22 @@ class NeuralNetwork(object):
             cv2.putText(gray, "Forward: {}".format(proba_forward), (10, 40), cv2.FONT_HERSHEY_SIMPLEX, .45, (255, 255, 0), 1)
             cv2.putText(gray, "Left:    {}".format(proba_left), (10, 60), cv2.FONT_HERSHEY_SIMPLEX, .45, (255, 255, 0), 1)
             cv2.putText(gray, "Right:   {}".format(proba_right), (10, 80), cv2.FONT_HERSHEY_SIMPLEX, .45, (255, 255, 0), 1)
+<<<<<<< HEAD
 
+=======
+            cv2.imshow('Original', gray)
+            # cv2.imshow('What the model sees', auto)
+>>>>>>> origin/master
             cv2.imwrite('test_frames_temp/frame{:>05}.jpg'.format(frame), gray)
             frame += 1
 
             # Send prediction to driver to tell it how to steer
+<<<<<<< HEAD
             # self.rcdriver.steer(prediction)
             print('steering ....')
+=======
+            self.rcdriver.steer(prediction)
+>>>>>>> origin/master
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 self.stop()
@@ -335,9 +479,15 @@ class PiVideoStream(object):
     def __init__(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # self.server_socket.bind(('192.168.1.66', 8000)) # The IP address of your computer (Paul's MacBook Air). This script should run before the one on the Pi.
+<<<<<<< HEAD
         self.server_socket.bind(('172.14.1.126', 8001)) # The IP address of your computer (Paul's MacBook Air). This script should run before the one on the Pi.
 
         print( 'Listening...')
+=======
+        self.server_socket.bind(('172.14.1.126', 8000)) # The IP address of your computer (Paul's MacBook Air). This script should run before the one on the Pi.
+
+        print 'Listening...'
+>>>>>>> origin/master
         self.server_socket.listen(0)
 
         # Accept a single connection ('rb' is 'read binary')
@@ -354,8 +504,13 @@ class PiVideoStream(object):
 
     def start(self):
         # start the thread to read frames from the video stream
+<<<<<<< HEAD
         print( 'Starting PiVideoStream thread...')
         print (' \"Hold on to your butts!\" ')
+=======
+        print 'Starting PiVideoStream thread...'
+        print ' \"Hold on to your butts!\" '
+>>>>>>> origin/master
 
         # Start a new thread
         t = threading.Thread(target=self.update, args=())
@@ -396,10 +551,18 @@ if __name__ == '__main__':
         # Rename the folder that collected all of the test frames. Then make a new folder to collect next round of test frames.
         os.rename(  './test_frames_temp', './test_frames_SAVED/test_frames_{}'.format(timestr))
         os.makedirs('./test_frames_temp')
+<<<<<<< HEAD
         print ('\nTerminating...\n')
+=======
+        print '\nTerminating...\n'
+>>>>>>> origin/master
 
         # Close video_stream thread.
         video_stream = PiVideoStream()
         video_stream.connection.close()
 
+<<<<<<< HEAD
         print ('\nDone.\n')
+=======
+        print '\nDone.\n'
+>>>>>>> origin/master
