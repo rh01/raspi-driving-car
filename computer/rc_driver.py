@@ -17,7 +17,7 @@ class NeuralNetwork(object):
     def create(self):
         layer_size = np.int32([38400, 32, 4])
         self.model.create(layer_size)
-        self.model.load('mlp_xml/mlp_final1.xml')
+        self.model.load('mlp_xml/mlp_v2.xml')
 
     def predict(self, samples):
         ret, resp = self.model.predict(samples)
