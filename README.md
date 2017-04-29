@@ -20,13 +20,13 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 
 ## Auto RC Model
 
-![](http://olrs8j04a.bkt.clouddn.com/17-4-29/39190678-file_1493437054404_11048.png)
+![](files_ prepare/DSC_2533.png)
 
-![](http://olrs8j04a.bkt.clouddn.com/17-4-29/21988197-file_1493437053839_c5fe.png)
+![](files_ prepare/DSC_2534.png)
 
-![](http://olrs8j04a.bkt.clouddn.com/17-4-29/28811802-file_1493437053348_cfa6.png)
+![](files_ prepare/DSC_2535png)
 
-![](http://olrs8j04a.bkt.clouddn.com/17-4-29/34616048-file_1493437052531_7b53.png)
+![](files_ prepare/DSC_2536.png)
 
 ## College Data Process
 
