@@ -1,6 +1,10 @@
 ## Introduction
 
-This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee, and this project refered to [AutoRCCar](https://github.com/hamuchiwa/AutoRCCar)
+This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee, and this project refered to [AutoRCCar](https://github.com/hamuchiwa/AutoRCCar), and you can find video at my Youtube channel
+
+
+[![ScreenShot](http://olrs8j04a.bkt.clouddn.com/17-4-29/77237248-file_1493436402072_cc48.png)](https://youtu.be/poPoz264rpo)
+
 
 ## Materials
 
