@@ -20,7 +20,7 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 
 ## Auto RC Model
 
-![](http://olrs8j04a.bkt.clouddn.com/17-4-3/61400002-file_1491224765140_11921.jpg "forward")
+![](http://olrs8j04a.bkt.clouddn.com/17-4-29/53073278-file_1493436675305_9169.jpg "forward")
 
 ![](http://olrs8j04a.bkt.clouddn.com/17-4-3/20135471-file_1491224765877_d3c8.jpg)
 
