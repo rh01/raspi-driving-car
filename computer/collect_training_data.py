@@ -140,7 +140,7 @@ class CollectTrainingData(object):
             train_labels = label_array[1:, :]
 
             # save training data as a numpy file
-            np.savez('training_data/test20.npz', train=train, train_labels=train_labels)
+            np.savez('training_data/test021.npz', train=train, train_labels=train_labels)
 
             e2 = cv2.getTickCount()
             # calculate streaming duration
