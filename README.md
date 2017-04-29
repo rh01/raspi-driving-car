@@ -20,13 +20,13 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 
 ## Auto RC Model
 
-![](files_ prepare/DSC_2533.png)
+![](files_prepare/DSC_2533.png)
 
-![](files_ prepare/DSC_2534.png)
+![](files_prepare/DSC_2534.png)
 
-![](files_ prepare/DSC_2535png)
+![](files_prepare/DSC_2535png)
 
-![](files_ prepare/DSC_2536.png)
+![](files_prepare/DSC_2536.png)
 
 ## College Data Process
 
