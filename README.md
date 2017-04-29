@@ -24,7 +24,7 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 
 ![](files_prepare/DSC_2534.png)
 
-![](files_prepare/DSC_2535png)
+![](files_prepare/DSC_2535.png)
 
 ![](files_prepare/DSC_2536.png)
 
