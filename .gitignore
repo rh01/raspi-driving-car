@@ -1,7 +1,10 @@
 *.jpg
 *.spec
 *.npz
-mlp*.xml
+
+
+computer/mlp_xml/
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
