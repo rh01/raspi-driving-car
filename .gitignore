@@ -2,6 +2,8 @@
 *.spec
 *.npz
 
+.idea/
+
 
 computer/mlp_xml/
 
