@@ -42,3 +42,7 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 * Optimaization
 * change model
 * etc...
+
+## LICENSE
+
+![](https://img.shields.io/dub/l/vibe-d.svg)
