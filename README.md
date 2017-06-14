@@ -14,6 +14,8 @@ This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee,
 * keras 
 * tensorflow
 
+Additional, v4L2 driver for raspberry transfer picamera to video0 or 1 locallay.
+
 ## Materials
 
 * RaspberryPi 3 B+
