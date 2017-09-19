@@ -38,9 +38,6 @@ Additional, **v4L2** driver for raspberry transfer picamera to video0 or 1 local
 
 ![](files_prepare/DSC_2536.png)
 
-## College Data Process
-
-![](http://olrs8j04a.bkt.clouddn.com/17-4-8/19423442-file_1491627496361_813f.gif)
 
 ## Training Step
 
