@@ -2,10 +2,10 @@
 
 This project is my capstone of undergraduate, and my cooperator is Zhong-ze Lee, and this project refered to [AutoRCCar](https://github.com/hamuchiwa/AutoRCCar), and you can find video at my [Youtube](https://www.youtube.com/watch?v=poPoz264rpo&feature=youtu.be) channel
 
-Details Configuration:<https://github.com/rh01/raspi-driving-car/wiki>
-
-
 [![ScreenShot](http://olrs8j04a.bkt.clouddn.com/17-4-29/92870176-file_1493436550332_b7d7.png)](https://youtu.be/poPoz264rpo)
+
+Details Configuration: <https://github.com/rh01/raspi-driving-car/wiki>
+
 
 ## Dependencies
 
